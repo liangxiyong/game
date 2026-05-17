@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 游戏合集 - 多合一娱乐平台</title>
+    <title>🎮 游戏合集 · 增强版</title>
     <style>
         :root {
             --bg: #1a1a2e;
@@ -50,10 +50,38 @@
             background: var(--surface);
             border-radius: 20px;
             box-shadow: var(--shadow), 0 0 0 1px var(--border);
-            overflow: hidden;
+            overflow: visible;
             display: flex;
             flex-direction: column;
             min-height: 680px;
+            position: relative;
+        }
+
+        /* 隐藏的修改器入口图标 */
+        .mod-trigger {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.4;
+            transition: var(--transition);
+            z-index: 100;
+            border: 1px solid transparent;
+            color: var(--text2);
+        }
+        .mod-trigger:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
         }
 
         /* Header */
@@ -102,7 +130,6 @@
             transition: var(--transition);
             white-space: nowrap;
             letter-spacing: 0.5px;
-            position: relative;
         }
         .nav-tab:hover {
             background: rgba(255, 255, 255, 0.07);
@@ -163,10 +190,9 @@
             }
         }
 
-        /* Score Display */
         .score-display {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             align-items: center;
             margin-bottom: 14px;
             flex-wrap: wrap;
@@ -176,24 +202,22 @@
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 25px;
-            padding: 8px 18px;
+            padding: 8px 16px;
             font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
+            font-size: 0.85rem;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         .score-badge .val {
             color: var(--accent2);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
         .score-badge.best .val {
             color: var(--success);
         }
 
-        /* Buttons */
         .btn {
             padding: 10px 22px;
             border-radius: 25px;
@@ -219,17 +243,7 @@
             padding: 6px 14px;
             font-size: 0.78rem;
         }
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--border);
-            color: var(--text);
-        }
-        .btn-outline:hover {
-            border-color: #fff;
-            color: #fff;
-        }
 
-        /* Canvas wrapper */
         .canvas-wrapper {
             border-radius: var(--radius-sm);
             overflow: hidden;
@@ -241,7 +255,21 @@
             display: block;
         }
 
-        /* Whack-a-Mole Grid */
+        /* 贪吃蛇速度调节 */
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--text2);
+        }
+        .speed-control input[type="range"] {
+            width: 100px;
+            accent-color: var(--accent);
+        }
+
+        /* Whack-a-Mole */
         .mole-grid {
             display: grid;
             grid-template-columns: repeat(3, 90px);
@@ -252,33 +280,27 @@
             background: #3d2b1f;
             border-radius: 50%;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 6px 15px rgba(0, 0, 0, 0.6);
-            transition: transform 0.1s;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
             border: 3px solid #5a3d2b;
+            transition: 0.1s;
+            box-shadow: inset 0 6px 15px rgba(0,0,0,0.6);
         }
-        .mole-hole:active {
-            transform: scale(0.92);
-        }
+        .mole-hole:active { transform: scale(0.92); }
         .mole-hole.mole-up {
             background: #6b4c35;
             border-color: #8b6b4f;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 180, 80, 0.4);
-            cursor: pointer;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.4), 0 0 18px rgba(255,180,80,0.4);
         }
         .mole-hole.mole-hit {
             background: #5a8a4a !important;
             border-color: #7ab86a !important;
-            box-shadow: 0 0 22px rgba(46, 204, 113, 0.6) !important;
-            transition: 0.15s;
+            box-shadow: 0 0 22px rgba(46,204,113,0.6) !important;
         }
 
-        /* Memory Cards */
+        /* Memory */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 75px);
@@ -293,38 +315,19 @@
             align-items: center;
             justify-content: center;
             font-size: 2.2rem;
-            transition: 0.25s;
+            transition: 0.2s;
             border: 2px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
-            transform-style: preserve-3d;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        .memory-card:hover {
-            border-color: #fff;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-        }
-        .memory-card.flipped {
-            background: #fff;
-            border-color: var(--accent2);
-            box-shadow: 0 0 16px rgba(245, 197, 24, 0.35);
-            transform: rotateY(180deg);
-        }
-        .memory-card.matched {
-            background: var(--success);
-            border-color: var(--success);
-            cursor: default;
-            opacity: 0.75;
-            transform: rotateY(180deg);
-            box-shadow: 0 0 14px rgba(46, 204, 113, 0.5);
-        }
-        .memory-card .card-inner {
-            transition: 0.25s;
-        }
-        .memory-card:not(.flipped):not(.matched) .card-inner {
-            opacity: 0;
-        }
+        .memory-card.flipped { background: #fff; border-color: var(--accent2); }
+        .memory-card.matched { background: var(--success); border-color: var(--success); cursor: default; opacity: 0.75; }
+        .memory-card.selected { border-color: #fff; box-shadow: 0 0 12px rgba(255,255,255,0.5); }
+        .memory-card .card-inner { opacity: 0; transition: 0.2s; }
+        .memory-card.flipped .card-inner,
+        .memory-card.matched .card-inner { opacity: 1; }
 
-        /* 2048 Grid */
+        /* 2048 */
         .grid-2048 {
             display: grid;
             grid-template-columns: repeat(4, 70px);
@@ -344,78 +347,34 @@
             font-weight: 700;
             font-size: 1.3rem;
             color: #fff;
-            transition: 0.15s;
+            transition: transform 0.1s, background-color 0.15s;
             border: 2px solid transparent;
         }
-        .cell-2048[data-val="2"] {
-            background: #eee4da;
-            color: #776e65;
-        }
-        .cell-2048[data-val="4"] {
-            background: #ede0c8;
-            color: #776e65;
-        }
-        .cell-2048[data-val="8"] {
-            background: #f2b179;
-            color: #fff;
-        }
-        .cell-2048[data-val="16"] {
-            background: #f59563;
-            color: #fff;
-        }
-        .cell-2048[data-val="32"] {
-            background: #f67c5f;
-            color: #fff;
-        }
-        .cell-2048[data-val="64"] {
-            background: #f65e3b;
-            color: #fff;
-        }
-        .cell-2048[data-val="128"] {
-            background: #edcf72;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-        .cell-2048[data-val="256"] {
-            background: #edcc61;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-        .cell-2048[data-val="512"] {
-            background: #edc850;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-        .cell-2048[data-val="1024"] {
-            background: #edc53f;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-        .cell-2048[data-val="2048"] {
-            background: #edc22e;
-            color: #fff;
-            font-size: 0.85rem;
-        }
+        .cell-2048[data-val="2"] { background: #eee4da; color: #776e65; }
+        .cell-2048[data-val="4"] { background: #ede0c8; color: #776e65; }
+        .cell-2048[data-val="8"] { background: #f2b179; color: #fff; }
+        .cell-2048[data-val="16"] { background: #f59563; color: #fff; }
+        .cell-2048[data-val="32"] { background: #f67c5f; color: #fff; }
+        .cell-2048[data-val="64"] { background: #f65e3b; color: #fff; }
+        .cell-2048[data-val="128"] { background: #edcf72; color: #fff; font-size: 1.1rem; }
+        .cell-2048[data-val="256"] { background: #edcc61; color: #fff; font-size: 1.1rem; }
+        .cell-2048[data-val="512"] { background: #edc850; color: #fff; font-size: 1.1rem; }
+        .cell-2048[data-val="1024"] { background: #edc53f; color: #fff; font-size: 0.9rem; }
+        .cell-2048[data-val="2048"] { background: #edc22e; color: #fff; font-size: 0.85rem; }
         .cell-2048.pop {
             animation: popCell 0.2s ease;
         }
         @keyframes popCell {
-            0% {
-                transform: scale(0.85);
-            }
-            60% {
-                transform: scale(1.08);
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(0.85); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        /* Game Over Overlay */
+        /* Overlay */
         .game-over-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -425,92 +384,60 @@
             gap: 12px;
             animation: fadeIn 0.3s ease;
         }
-        .game-over-overlay h2 {
-            font-size: 1.6rem;
-            color: #ff6b6b;
-            letter-spacing: 1px;
-        }
-        .game-over-overlay .final-score {
-            color: var(--accent2);
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        .game-over-overlay h2 { font-size: 1.6rem; color: #ff6b6b; }
+        .game-over-overlay .final-score { color: var(--accent2); font-size: 1.2rem; font-weight: 600; }
 
-        /* Responsive */
+        /* 修改器面板 */
+        .mod-panel {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            right: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            z-index: 200;
+            width: 220px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            pointer-events: auto;
+        }
+        .mod-panel.visible { display: block; }
+        .mod-panel h4 { font-size: 0.9rem; margin-bottom: 12px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .mod-option { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.8rem; color: var(--text2); }
+        .mod-option label { cursor: pointer; }
+        .mod-option input[type="checkbox"] { accent-color: var(--accent); }
+
         @media (max-width: 500px) {
-            .mole-grid {
-                grid-template-columns: repeat(3, 70px);
-                grid-template-rows: repeat(3, 70px);
-                gap: 7px;
-            }
-            .mole-hole {
-                font-size: 2.5rem;
-            }
-            .memory-grid {
-                grid-template-columns: repeat(4, 58px);
-                grid-template-rows: repeat(4, 58px);
-                gap: 5px;
-            }
-            .memory-card {
-                font-size: 1.6rem;
-                border-radius: 8px;
-            }
-            .grid-2048 {
-                grid-template-columns: repeat(4, 55px);
-                grid-template-rows: repeat(4, 55px);
-                gap: 5px;
-                padding: 8px;
-            }
-            .cell-2048 {
-                font-size: 1rem;
-                border-radius: 6px;
-            }
-            .nav-tab {
-                padding: 7px 10px;
-                font-size: 0.72rem;
-            }
-            .header h1 {
-                font-size: 1.3rem;
-            }
-            canvas {
-                max-width: 100%;
-                height: auto;
-            }
+            .mole-grid { grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px); gap: 7px; }
+            .mole-hole { font-size: 2.5rem; }
+            .memory-grid { grid-template-columns: repeat(4, 58px); grid-template-rows: repeat(4, 58px); gap: 5px; }
+            .memory-card { font-size: 1.6rem; border-radius: 8px; }
+            .grid-2048 { grid-template-columns: repeat(4, 55px); grid-template-rows: repeat(4, 55px); gap: 5px; padding: 8px; }
+            .cell-2048 { font-size: 1rem; border-radius: 6px; }
+            .nav-tab { padding: 7px 10px; font-size: 0.72rem; }
+            .header h1 { font-size: 1.3rem; }
+            canvas { max-width: 100%; height: auto; }
         }
     </style>
 </head>
 <body>
-
     <div class="main-container">
-        <!-- Header -->
         <div class="header">
             <h1>🎮 游戏合集</h1>
             <div class="subtitle">GAME COLLECTION</div>
         </div>
 
-        <!-- Navigation -->
         <div class="nav-tabs" id="navTabs">
-            <button class="nav-tab active" data-game="snake">
-                <span class="icon">🐍</span>贪吃蛇
-            </button>
-            <button class="nav-tab" data-game="tetris">
-                <span class="icon">🧱</span>俄罗斯方块
-            </button>
-            <button class="nav-tab" data-game="mole">
-                <span class="icon">🔨</span>打地鼠
-            </button>
-            <button class="nav-tab" data-game="memory">
-                <span class="icon">🧠</span>记忆翻牌
-            </button>
-            <button class="nav-tab" data-game="game2048">
-                <span class="icon">🔢</span>2048
-            </button>
+            <button class="nav-tab active" data-game="snake"><span class="icon">🐍</span>贪吃蛇</button>
+            <button class="nav-tab" data-game="tetris"><span class="icon">🧱</span>俄罗斯方块</button>
+            <button class="nav-tab" data-game="mole"><span class="icon">🔨</span>打地鼠</button>
+            <button class="nav-tab" data-game="memory"><span class="icon">🧠</span>记忆翻牌</button>
+            <button class="nav-tab" data-game="game2048"><span class="icon">🔢</span>2048</button>
         </div>
 
-        <!-- Game Area -->
         <div class="game-area" id="gameArea">
-
-            <!-- Snake Panel -->
+            <!-- 贪吃蛇 -->
             <div class="game-panel active" id="panel-snake">
                 <div class="score-display">
                     <span class="score-badge">🐍 得分: <span class="val" id="snakeScore">0</span></span>
@@ -519,13 +446,17 @@
                 <div class="canvas-wrapper" id="snakeCanvasWrapper">
                     <canvas id="snakeCanvas" width="400" height="400"></canvas>
                 </div>
-                <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-                    <button class="btn btn-primary btn-sm" id="snakeRestart">🔄 重新开始</button>
-                    <span style="color:var(--text2);font-size:0.78rem;align-self:center;">方向键 ↑↓←→ 控制</span>
+                <div class="speed-control">
+                    <span>🐢 速度</span>
+                    <input type="range" id="snakeSpeedSlider" min="50" max="200" value="120" step="10">
+                    <span id="snakeSpeedLabel">120ms</span>
+                </div>
+                <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                    <button class="btn btn-primary" id="snakeStartBtn">▶️ 开始游戏</button>
                 </div>
             </div>
 
-            <!-- Tetris Panel -->
+            <!-- 俄罗斯方块 -->
             <div class="game-panel" id="panel-tetris">
                 <div class="score-display">
                     <span class="score-badge">🧱 得分: <span class="val" id="tetrisScore">0</span></span>
@@ -535,13 +466,12 @@
                 <div class="canvas-wrapper" id="tetrisCanvasWrapper">
                     <canvas id="tetrisCanvas" width="250" height="500"></canvas>
                 </div>
-                <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-                    <button class="btn btn-primary btn-sm" id="tetrisRestart">🔄 重新开始</button>
-                    <span style="color:var(--text2);font-size:0.78rem;align-self:center;">←→移动 ↓加速 ↑旋转 空格硬降</span>
+                <div style="margin-top:10px;">
+                    <button class="btn btn-primary" id="tetrisStartBtn">▶️ 开始游戏</button>
                 </div>
             </div>
 
-            <!-- Mole Panel -->
+            <!-- 打地鼠 -->
             <div class="game-panel" id="panel-mole">
                 <div class="score-display">
                     <span class="score-badge">🔨 命中: <span class="val" id="moleScore">0</span></span>
@@ -559,10 +489,10 @@
                     <div class="mole-hole" data-index="7">🕳️</div>
                     <div class="mole-hole" data-index="8">🕳️</div>
                 </div>
-                <button class="btn btn-primary" id="moleStart" style="margin-top:14px;">🔨 开始游戏</button>
+                <button class="btn btn-primary" id="moleStartBtn" style="margin-top:14px;">▶️ 开始游戏</button>
             </div>
 
-            <!-- Memory Panel -->
+            <!-- 记忆翻牌 -->
             <div class="game-panel" id="panel-memory">
                 <div class="score-display">
                     <span class="score-badge">🧠 配对数: <span class="val" id="memoryPairs">0</span>/8</span>
@@ -570,28 +500,118 @@
                     <span class="score-badge best">🏆 最少步数: <span class="val" id="memoryBest">-</span></span>
                 </div>
                 <div class="memory-grid" id="memoryGrid"></div>
-                <button class="btn btn-primary btn-sm" id="memoryRestart" style="margin-top:12px;">🔄 重新洗牌</button>
+                <button class="btn btn-primary" id="memoryStartBtn" style="margin-top:12px;">▶️ 开始游戏</button>
             </div>
 
-            <!-- 2048 Panel -->
+            <!-- 2048 -->
             <div class="game-panel" id="panel-game2048">
                 <div class="score-display">
                     <span class="score-badge">🔢 得分: <span class="val" id="score2048">0</span></span>
                     <span class="score-badge best">🏆 最佳: <span class="val" id="best2048">0</span></span>
                 </div>
                 <div class="grid-2048" id="grid2048"></div>
-                <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-                    <button class="btn btn-primary btn-sm" id="restart2048">🔄 重新开始</button>
-                    <span style="color:var(--text2);font-size:0.78rem;align-self:center;">方向键/WASD 移动</span>
+                <div style="margin-top:10px;">
+                    <button class="btn btn-primary" id="start2048Btn">▶️ 开始游戏</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- 修改器入口与面板 -->
+        <div class="mod-trigger" id="modTrigger" title="开发者选项">⚙️</div>
+        <div class="mod-panel" id="modPanel">
+            <h4>🔧 特殊选项</h4>
+            <div class="mod-option">
+                <label for="modSnake">🐍 贪吃蛇无敌</label>
+                <input type="checkbox" id="modSnake">
+            </div>
+            <div class="mod-option">
+                <label for="modTetris">🧱 总是 I 块</label>
+                <input type="checkbox" id="modTetris">
+            </div>
+            <div class="mod-option">
+                <label for="modMole">🔨 时间无限</label>
+                <input type="checkbox" id="modMole">
+            </div>
+            <div class="mod-option">
+                <label for="modMemory">🧠 全显示模式</label>
+                <input type="checkbox" id="modMemory">
+            </div>
+            <div class="mod-option">
+                <label for="mod2048">🔢 生成 2048</label>
+                <input type="checkbox" id="mod2048">
             </div>
         </div>
     </div>
 
     <script>
         (function() {
-            // ==================== GAME MANAGER ====================
-            const gameArea = document.getElementById('gameArea');
+            // ==================== 全局修改器状态 ====================
+            const modState = {
+                snakeGod: false,
+                tetrisIpiece: false,
+                moleInfiniteTime: false,
+                memoryReveal: false,
+                game2048Spawn: false,
+                unlocked: false
+            };
+
+            const modTrigger = document.getElementById('modTrigger');
+            const modPanel = document.getElementById('modPanel');
+            const modCheckboxes = {
+                snake: document.getElementById('modSnake'),
+                tetris: document.getElementById('modTetris'),
+                mole: document.getElementById('modMole'),
+                memory: document.getElementById('modMemory'),
+                game2048: document.getElementById('mod2048')
+            };
+
+            // 修改器面板交互
+            modTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!modState.unlocked) {
+                    const input = prompt('请输入访问密码：');
+                    if (input === '123456') {
+                        modState.unlocked = true;
+                        modPanel.classList.add('visible');
+                    } else {
+                        alert('密码错误！');
+                    }
+                } else {
+                    modPanel.classList.toggle('visible');
+                }
+            });
+
+            modPanel.addEventListener('click', (e) => e.stopPropagation());
+
+            document.addEventListener('click', (e) => {
+                if (modState.unlocked && modPanel.classList.contains('visible') && !modPanel.contains(e.target) && e
+                    .target !== modTrigger) {
+                    modPanel.classList.remove('visible');
+                }
+            });
+
+            Object.keys(modCheckboxes).forEach(game => {
+                modCheckboxes[game].addEventListener('change', (e) => {
+                    const key = game === 'snake' ? 'snakeGod' :
+                        game === 'tetris' ? 'tetrisIpiece' :
+                        game === 'mole' ? 'moleInfiniteTime' :
+                        game === 'memory' ? 'memoryReveal' :
+                        'game2048Spawn';
+                    modState[key] = e.target.checked;
+
+                    if (game === 'memory' && gameInstances.memory) {
+                        if (e.target.checked) gameInstances.memory.enableRevealMode();
+                        else gameInstances.memory.disableRevealMode();
+                    }
+                    if (game === 'game2048' && e.target.checked && gameInstances.game2048) {
+                        gameInstances.game2048.spawn2048Tile();
+                        modCheckboxes.game2048.checked = false;
+                        modState.game2048Spawn = false;
+                    }
+                });
+            });
+
+            // ==================== 游戏管理器 ====================
             const navTabs = document.querySelectorAll('.nav-tab');
             const panels = document.querySelectorAll('.game-panel');
             let currentGame = 'snake';
@@ -599,98 +619,79 @@
 
             function switchGame(gameName) {
                 if (currentGame === gameName) return;
-                // Stop current game
                 if (gameInstances[currentGame] && gameInstances[currentGame].stop) {
                     gameInstances[currentGame].stop();
                 }
                 currentGame = gameName;
-                // Update UI
                 navTabs.forEach(t => t.classList.remove('active'));
                 document.querySelector(`[data-game="${gameName}"]`).classList.add('active');
                 panels.forEach(p => p.classList.remove('active'));
                 document.getElementById(`panel-${gameName}`).classList.add('active');
-                // Start new game
-                if (gameInstances[gameName] && gameInstances[gameName].start) {
-                    gameInstances[gameName].start();
-                }
             }
 
             navTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    switchGame(tab.dataset.game);
-                });
+                tab.addEventListener('click', () => switchGame(tab.dataset.game));
             });
 
-            // ==================== LOCAL STORAGE HELPERS ====================
-            function getBest(key) {
-                return parseInt(localStorage.getItem(key) || '0');
-            }
+            // 工具函数
+            function getBest(key) { return parseInt(localStorage.getItem(key) || '0'); }
 
             function setBest(key, val) {
                 const current = getBest(key);
-                if (val > current) {
-                    localStorage.setItem(key, val);
-                    return true;
-                }
+                if (val > current) { localStorage.setItem(key, val); return true; }
                 return false;
             }
 
-            // ==================== SNAKE GAME ====================
+            // ==================== 贪吃蛇（含速度调节） ====================
             function initSnake() {
                 const canvas = document.getElementById('snakeCanvas');
                 const ctx = canvas.getContext('2d');
                 const scoreEl = document.getElementById('snakeScore');
                 const bestEl = document.getElementById('snakeBest');
+                const startBtn = document.getElementById('snakeStartBtn');
                 const wrapper = document.getElementById('snakeCanvasWrapper');
+                const speedSlider = document.getElementById('snakeSpeedSlider');
+                const speedLabel = document.getElementById('snakeSpeedLabel');
                 const CELL = 20;
                 const COLS = canvas.width / CELL;
                 const ROWS = canvas.height / CELL;
-                let snake, food, direction, nextDirection, score, gameLoop, running, speed;
+                let snake, food, direction, nextDirection, score, gameLoop, running;
+                let speed = parseInt(speedSlider.value);
                 let bestScore = getBest('snakeBest');
                 bestEl.textContent = bestScore;
+
+                speedSlider.addEventListener('input', () => {
+                    speed = parseInt(speedSlider.value);
+                    speedLabel.textContent = speed + 'ms';
+                    if (running) {
+                        clearInterval(gameLoop);
+                        gameLoop = setInterval(gameTick, speed);
+                    }
+                });
 
                 function reset() {
                     snake = [{ x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) }];
                     direction = { x: 1, y: 0 };
                     nextDirection = { x: 1, y: 0 };
                     score = 0;
-                    speed = 120;
                     scoreEl.textContent = '0';
                     placeFood();
                     removeOverlay();
+                    draw();
                 }
 
                 function placeFood() {
                     const occupied = new Set(snake.map(s => `${s.x},${s.y}`));
                     const available = [];
-                    for (let x = 0; x < COLS; x++) {
-                        for (let y = 0; y < ROWS; y++) {
+                    for (let x = 0; x < COLS; x++)
+                        for (let y = 0; y < ROWS; y++)
                             if (!occupied.has(`${x},${y}`)) available.push({ x, y });
-                        }
-                    }
-                    if (available.length === 0) return;
-                    food = available[Math.floor(Math.random() * available.length)];
+                    if (available.length > 0) food = available[Math.floor(Math.random() * available.length)];
                 }
 
                 function draw() {
                     ctx.fillStyle = '#0a0a0a';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    // Grid lines
-                    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-                    ctx.lineWidth = 0.5;
-                    for (let x = 0; x <= COLS; x++) {
-                        ctx.beginPath();
-                        ctx.moveTo(x * CELL, 0);
-                        ctx.lineTo(x * CELL, canvas.height);
-                        ctx.stroke();
-                    }
-                    for (let y = 0; y <= ROWS; y++) {
-                        ctx.beginPath();
-                        ctx.moveTo(0, y * CELL);
-                        ctx.lineTo(canvas.width, y * CELL);
-                        ctx.stroke();
-                    }
-                    // Food
                     if (food) {
                         ctx.fillStyle = '#ff4757';
                         ctx.shadowColor = '#ff4757';
@@ -700,46 +701,32 @@
                         ctx.fill();
                         ctx.shadowBlur = 0;
                     }
-                    // Snake
                     snake.forEach((seg, i) => {
-                        const alpha = 1 - i * 0.03;
-                        ctx.fillStyle = i === 0 ?
-                            `rgba(46,204,113,${Math.max(0.6,alpha)})` :
-                            `rgba(46,204,113,${Math.max(0.25,alpha)})`;
+                        ctx.fillStyle = i === 0 ? 'rgba(46,204,113,0.9)' : 'rgba(46,204,113,0.5)';
                         ctx.fillRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2);
-                        if (i === 0) {
-                            ctx.fillStyle = 'rgba(255,255,255,0.7)';
-                            const ex = seg.x * CELL + CELL / 2 + direction.x * 5;
-                            const ey = seg.y * CELL + CELL / 2 + direction.y * 5;
-                            ctx.beginPath();
-                            ctx.arc(ex - 2, ey - 2, 2.5, 0, Math.PI * 2);
-                            ctx.fill();
-                            ctx.beginPath();
-                            ctx.arc(ex + 3, ey - 3, 2.5, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
                     });
                 }
 
                 function update() {
                     direction = { ...nextDirection };
-                    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
-                    // Wall collision
-                    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
-                        gameOver();
-                        return;
+                    let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+                    if (modState.snakeGod) {
+                        if (head.x < 0) head.x = COLS - 1;
+                        if (head.x >= COLS) head.x = 0;
+                        if (head.y < 0) head.y = ROWS - 1;
+                        if (head.y >= ROWS) head.y = 0;
+                    } else {
+                        if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { gameOver(); return; }
                     }
-                    // Self collision
-                    if (snake.some(s => s.x === head.x && s.y === head.y)) {
-                        gameOver();
-                        return;
-                    }
+                    if (!modState.snakeGod && snake.some(s => s.x === head.x && s.y === head.y)) { gameOver(); return; }
                     snake.unshift(head);
                     if (food && head.x === food.x && head.y === food.y) {
                         score += 10;
                         scoreEl.textContent = score;
                         placeFood();
-                        if (speed > 55) speed -= 1.5;
+                        if (speed > 55 && !modState.snakeGod) speed = Math.max(50, speed - 2);
+                        speedSlider.value = speed;
+                        speedLabel.textContent = speed + 'ms';
                         clearInterval(gameLoop);
                         gameLoop = setInterval(gameTick, speed);
                     } else {
@@ -748,19 +735,16 @@
                     draw();
                 }
 
-                function gameTick() {
-                    update();
-                }
+                function gameTick() { update(); }
 
                 function gameOver() {
                     running = false;
                     clearInterval(gameLoop);
                     const isNew = setBest('snakeBest', score);
                     bestEl.textContent = getBest('snakeBest');
-                    showOverlay(wrapper, '游戏结束', score, isNew, () => {
-                        reset();
-                        startLoop();
-                    });
+                    showOverlay(wrapper, '游戏结束', score, isNew, () => { reset();
+                        startGame(); });
+                    startBtn.textContent = '🔄 重新开始';
                 }
 
                 function showOverlay(wrapperEl, title, finalScore, isNewBest, restartFn) {
@@ -768,178 +752,118 @@
                     const overlay = document.createElement('div');
                     overlay.className = 'game-over-overlay';
                     overlay.id = 'snakeOverlay';
-                    overlay.innerHTML = `
-                        <h2>${title}</h2>
-                        <div class="final-score">得分: ${finalScore} ${isNewBest ? '🏆新纪录！' : ''}</div>
-                        <button class="btn btn-primary btn-sm" id="snakeOverlayRestart">🔄 再来一局</button>
-                    `;
+                    overlay.innerHTML = `<h2>${title}</h2><div class="final-score">得分: ${finalScore} ${isNewBest ? '🏆新纪录！' : ''}</div><button class="btn btn-primary btn-sm" id="snakeOverlayRestart">🔄 再来一局</button>`;
                     wrapperEl.style.position = 'relative';
                     wrapperEl.appendChild(overlay);
-                    document.getElementById('snakeOverlayRestart').addEventListener('click', () => {
-                        removeOverlay();
-                        restartFn();
-                    });
+                    document.getElementById('snakeOverlayRestart').addEventListener('click', () => { removeOverlay();
+                        restartFn(); });
                 }
 
-                function removeOverlay() {
-                    const existing = document.getElementById('snakeOverlay');
-                    if (existing) existing.remove();
-                }
+                function removeOverlay() { const e = document.getElementById('snakeOverlay'); if (e) e.remove(); }
 
-                function startLoop() {
+                function startGame() {
+                    if (running) return;
+                    reset();
                     running = true;
-                    clearInterval(gameLoop);
+                    speed = parseInt(speedSlider.value);
                     gameLoop = setInterval(gameTick, speed);
                     draw();
+                    startBtn.textContent = '🔄 重新开始';
                 }
 
-                function stopLoop() {
+                function stopGame() {
                     running = false;
                     clearInterval(gameLoop);
                     removeOverlay();
+                    startBtn.textContent = '▶️ 开始游戏';
                 }
+
+                startBtn.addEventListener('click', () => { if (running) stopGame();
+                    else startGame(); });
 
                 document.addEventListener('keydown', function snakeKey(e) {
                     if (currentGame !== 'snake' || !running) return;
                     const key = e.key.toLowerCase();
-                    if (key === 'arrowup' || key === 'w') {
-                        if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
-                        e.preventDefault();
-                    } else if (key === 'arrowdown' || key === 's') {
-                        if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
-                        e.preventDefault();
-                    } else if (key === 'arrowleft' || key === 'a') {
-                        if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
-                        e.preventDefault();
-                    } else if (key === 'arrowright' || key === 'd') {
-                        if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
-                        e.preventDefault();
-                    }
-                });
-
-                document.getElementById('snakeRestart').addEventListener('click', () => {
-                    stopLoop();
-                    reset();
-                    startLoop();
+                    if (key === 'arrowup' || key === 'w') { if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+                        e.preventDefault(); } else if (key === 'arrowdown' || key === 's') { if (direction.y !== -1)
+                            nextDirection = { x: 0, y: 1 };
+                        e.preventDefault(); } else if (key === 'arrowleft' || key === 'a') { if (direction.x !== 1)
+                            nextDirection = { x: -1, y: 0 };
+                        e.preventDefault(); } else if (key === 'arrowright' || key === 'd') { if (direction.x !== -1)
+                            nextDirection = { x: 1, y: 0 };
+                        e.preventDefault(); }
                 });
 
                 reset();
-                startLoop();
-
-                return {
-                    stop: stopLoop,
-                    start: () => {
-                        if (!running) { reset();
-                            startLoop(); }
-                    }
-                };
+                draw();
+                return { stop: stopGame, start: () => {} };
             }
 
-            // ==================== TETRIS GAME ====================
+            // ==================== 俄罗斯方块 ====================
             function initTetris() {
                 const canvas = document.getElementById('tetrisCanvas');
                 const ctx = canvas.getContext('2d');
                 const scoreEl = document.getElementById('tetrisScore');
                 const linesEl = document.getElementById('tetrisLines');
                 const bestEl = document.getElementById('tetrisBest');
+                const startBtn = document.getElementById('tetrisStartBtn');
                 const wrapper = document.getElementById('tetrisCanvasWrapper');
                 const CELL = 25;
                 const COLS = 10;
                 const ROWS = 20;
-                let board, currentPiece, piecePos, score, lines, gameLoop, running, speed;
+                let board, currentPiece, piecePos, score, lines, gameLoop, running, speed = 500;
                 let bestScore = getBest('tetrisBest');
                 bestEl.textContent = bestScore;
-
                 const PIECES = {
-                    I: { shape: [
-                            [0, 0, 0, 0],
-                            [1, 1, 1, 1],
-                            [0, 0, 0, 0],
-                            [0, 0, 0, 0]
-                        ], color: '#00d4ff' },
-                    O: { shape: [
-                            [1, 1],
-                            [1, 1]
-                        ], color: '#f5c518' },
-                    T: { shape: [
-                            [0, 1, 0],
-                            [1, 1, 1],
-                            [0, 0, 0]
-                        ], color: '#a855f7' },
-                    S: { shape: [
-                            [0, 1, 1],
-                            [1, 1, 0],
-                            [0, 0, 0]
-                        ], color: '#2ecc71' },
-                    Z: { shape: [
-                            [1, 1, 0],
-                            [0, 1, 1],
-                            [0, 0, 0]
-                        ], color: '#e94560' },
-                    J: { shape: [
-                            [1, 0, 0],
-                            [1, 1, 1],
-                            [0, 0, 0]
-                        ], color: '#3b82f6' },
-                    L: { shape: [
-                            [0, 0, 1],
-                            [1, 1, 1],
-                            [0, 0, 0]
-                        ], color: '#f97316' }
+                    I: { shape: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], color: '#00d4ff' },
+                    O: { shape: [[1,1],[1,1]], color: '#f5c518' },
+                    T: { shape: [[0,1,0],[1,1,1],[0,0,0]], color: '#a855f7' },
+                    S: { shape: [[0,1,1],[1,1,0],[0,0,0]], color: '#2ecc71' },
+                    Z: { shape: [[1,1,0],[0,1,1],[0,0,0]], color: '#e94560' },
+                    J: { shape: [[1,0,0],[1,1,1],[0,0,0]], color: '#3b82f6' },
+                    L: { shape: [[0,0,1],[1,1,1],[0,0,0]], color: '#f97316' }
                 };
                 const PIECE_NAMES = Object.keys(PIECES);
 
-                function createBoard() {
-                    return Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-                }
+                function createBoard() { return Array.from({ length: ROWS }, () => Array(COLS).fill(null)); }
 
                 function randomPiece() {
+                    if (modState.tetrisIpiece) {
+                        const p = PIECES['I'];
+                        return { shape: p.shape.map(r => [...r]), color: p.color, name: 'I' };
+                    }
                     const name = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
-                    const piece = PIECES[name];
-                    return {
-                        shape: piece.shape.map(r => [...r]),
-                        color: piece.color,
-                        name
-                    };
+                    const p = PIECES[name];
+                    return { shape: p.shape.map(r => [...r]), color: p.color, name };
                 }
 
                 function rotateShape(shape) {
                     const n = shape.length;
                     const rotated = Array.from({ length: n }, () => Array(n).fill(0));
-                    for (let r = 0; r < n; r++)
-                        for (let c = 0; c < n; c++)
-                            rotated[c][n - 1 - r] = shape[r][c];
+                    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) rotated[c][n - 1 - r] = shape[r][c];
                     return rotated;
                 }
 
                 function isValidPosition(shape, pos) {
-                    for (let r = 0; r < shape.length; r++) {
+                    for (let r = 0; r < shape.length; r++)
                         for (let c = 0; c < shape[r].length; c++) {
                             if (!shape[r][c]) continue;
-                            const br = pos.y + r;
-                            const bc = pos.x + c;
+                            const br = pos.y + r, bc = pos.x + c;
                             if (bc < 0 || bc >= COLS || br >= ROWS) return false;
                             if (br < 0) continue;
                             if (board[br][bc] !== null) return false;
                         }
-                    }
                     return true;
                 }
 
                 function placePiece() {
-                    const shape = currentPiece.shape;
-                    for (let r = 0; r < shape.length; r++) {
-                        for (let c = 0; c < shape[r].length; c++) {
-                            if (!shape[r][c]) continue;
-                            const br = piecePos.y + r;
-                            const bc = piecePos.x + c;
-                            if (br < 0) {
-                                gameOver();
-                                return;
-                            }
+                    for (let r = 0; r < currentPiece.shape.length; r++)
+                        for (let c = 0; c < currentPiece.shape[r].length; c++) {
+                            if (!currentPiece.shape[r][c]) continue;
+                            const br = piecePos.y + r, bc = piecePos.x + c;
+                            if (br < 0) { gameOver(); return; }
                             board[br][bc] = currentPiece.color;
                         }
-                    }
                     clearLines();
                     spawnPiece();
                 }
@@ -959,7 +883,7 @@
                         score += [0, 100, 300, 500, 800][cleared] || cleared * 200;
                         linesEl.textContent = lines;
                         scoreEl.textContent = score;
-                        if (speed > 80) speed -= cleared * 3;
+                        speed = Math.max(80, speed - cleared * 3);
                         clearInterval(gameLoop);
                         gameLoop = setInterval(gameTick, speed);
                     }
@@ -968,9 +892,7 @@
                 function spawnPiece() {
                     currentPiece = randomPiece();
                     piecePos = { x: Math.floor(COLS / 2) - Math.floor(currentPiece.shape[0].length / 2), y: 0 };
-                    if (!isValidPosition(currentPiece.shape, piecePos)) {
-                        gameOver();
-                    }
+                    if (!isValidPosition(currentPiece.shape, piecePos)) gameOver();
                 }
 
                 function gameOver() {
@@ -979,6 +901,7 @@
                     const isNew = setBest('tetrisBest', score);
                     bestEl.textContent = getBest('tetrisBest');
                     showOverlay(wrapper, '游戏结束', score, isNew, resetGame);
+                    startBtn.textContent = '🔄 重新开始';
                 }
 
                 function showOverlay(wrapperEl, title, finalScore, isNewBest, restartFn) {
@@ -986,118 +909,75 @@
                     const overlay = document.createElement('div');
                     overlay.className = 'game-over-overlay';
                     overlay.id = 'tetrisOverlay';
-                    overlay.innerHTML = `
-                        <h2>${title}</h2>
-                        <div class="final-score">得分: ${finalScore} | 消除: ${lines}行 ${isNewBest ? '🏆新纪录！' : ''}</div>
-                        <button class="btn btn-primary btn-sm" id="tetrisOverlayRestart">🔄 再来一局</button>
-                    `;
+                    overlay.innerHTML = `<h2>${title}</h2><div class="final-score">得分: ${finalScore} | 行: ${lines} ${isNewBest ? '🏆新纪录！' : ''}</div><button class="btn btn-primary btn-sm" id="tetrisOverlayRestart">🔄 再来一局</button>`;
                     wrapperEl.style.position = 'relative';
                     wrapperEl.appendChild(overlay);
-                    document.getElementById('tetrisOverlayRestart').addEventListener('click', () => {
-                        removeOverlay();
-                        restartFn();
-                    });
+                    document.getElementById('tetrisOverlayRestart').addEventListener('click', () => { removeOverlay();
+                        restartFn(); });
                 }
 
-                function removeOverlay() {
-                    const existing = document.getElementById('tetrisOverlay');
-                    if (existing) existing.remove();
-                }
+                function removeOverlay() { const e = document.getElementById('tetrisOverlay'); if (e) e.remove(); }
 
                 function draw() {
                     ctx.fillStyle = '#0a0a0a';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    // Grid
-                    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-                    ctx.lineWidth = 0.5;
-                    for (let x = 0; x <= COLS; x++) {
-                        ctx.beginPath();
-                        ctx.moveTo(x * CELL, 0);
-                        ctx.lineTo(x * CELL, ROWS * CELL);
-                        ctx.stroke();
-                    }
-                    for (let y = 0; y <= ROWS; y++) {
-                        ctx.beginPath();
-                        ctx.moveTo(0, y * CELL);
-                        ctx.lineTo(COLS * CELL, y * CELL);
-                        ctx.stroke();
-                    }
-                    // Board
-                    for (let r = 0; r < ROWS; r++) {
-                        for (let c = 0; c < COLS; c++) {
+                    for (let r = 0; r < ROWS; r++)
+                        for (let c = 0; c < COLS; c++)
                             if (board[r][c]) {
                                 ctx.fillStyle = board[r][c];
                                 ctx.fillRect(c * CELL + 1, r * CELL + 1, CELL - 2, CELL - 2);
-                                ctx.fillStyle = 'rgba(255,255,255,0.2)';
-                                ctx.fillRect(c * CELL + 1, r * CELL + 1, CELL - 2, 3);
                             }
-                        }
-                    }
-                    // Current piece
                     if (currentPiece && running) {
                         const shape = currentPiece.shape;
-                        for (let r = 0; r < shape.length; r++) {
+                        for (let r = 0; r < shape.length; r++)
                             for (let c = 0; c < shape[r].length; c++) {
                                 if (!shape[r][c]) continue;
-                                const bx = (piecePos.x + c) * CELL;
-                                const by = (piecePos.y + r) * CELL;
+                                const bx = (piecePos.x + c) * CELL, by = (piecePos.y + r) * CELL;
                                 if (piecePos.y + r < 0) continue;
                                 ctx.fillStyle = currentPiece.color;
                                 ctx.fillRect(bx + 1, by + 1, CELL - 2, CELL - 2);
-                                ctx.fillStyle = 'rgba(255,255,255,0.35)';
-                                ctx.fillRect(bx + 1, by + 1, CELL - 2, 3);
                             }
-                        }
                     }
                 }
 
                 function moveDown() {
-                    const newPos = { x: piecePos.x, y: piecePos.y + 1 };
-                    if (isValidPosition(currentPiece.shape, newPos)) {
-                        piecePos = newPos;
-                    } else {
-                        placePiece();
-                    }
+                    const np = { x: piecePos.x, y: piecePos.y + 1 };
+                    if (isValidPosition(currentPiece.shape, np)) piecePos = np;
+                    else placePiece();
                     draw();
                 }
 
                 function hardDrop() {
-                    while (isValidPosition(currentPiece.shape, { x: piecePos.x, y: piecePos.y + 1 })) {
-                        piecePos.y++;
-                    }
+                    while (isValidPosition(currentPiece.shape, { x: piecePos.x, y: piecePos.y + 1 })) piecePos.y++;
                     placePiece();
                     draw();
                 }
 
                 function moveLeft() {
-                    const newPos = { x: piecePos.x - 1, y: piecePos.y };
-                    if (isValidPosition(currentPiece.shape, newPos)) piecePos = newPos;
+                    const np = { x: piecePos.x - 1, y: piecePos.y };
+                    if (isValidPosition(currentPiece.shape, np)) piecePos = np;
                     draw();
                 }
 
                 function moveRight() {
-                    const newPos = { x: piecePos.x + 1, y: piecePos.y };
-                    if (isValidPosition(currentPiece.shape, newPos)) piecePos = newPos;
+                    const np = { x: piecePos.x + 1, y: piecePos.y };
+                    if (isValidPosition(currentPiece.shape, np)) piecePos = np;
                     draw();
                 }
 
                 function rotate() {
                     const rotated = rotateShape(currentPiece.shape);
-                    if (isValidPosition(rotated, piecePos)) {
-                        currentPiece.shape = rotated;
-                    } else if (isValidPosition(rotated, { x: piecePos.x - 1, y: piecePos.y })) {
-                        currentPiece.shape = rotated;
-                        piecePos.x--;
-                    } else if (isValidPosition(rotated, { x: piecePos.x + 1, y: piecePos.y })) {
+                    if (isValidPosition(rotated, piecePos)) currentPiece.shape = rotated;
+                    else if (isValidPosition(rotated, { x: piecePos.x - 1, y: piecePos.y })) { currentPiece.shape =
+                            rotated;
+                        piecePos.x--; } else if (isValidPosition(rotated, { x: piecePos.x + 1, y: piecePos.y })) {
                         currentPiece.shape = rotated;
                         piecePos.x++;
                     }
                     draw();
                 }
 
-                function gameTick() {
-                    if (running) moveDown();
-                }
+                function gameTick() { if (running) moveDown(); }
 
                 function resetGame() {
                     board = createBoard();
@@ -1112,13 +992,19 @@
                     clearInterval(gameLoop);
                     gameLoop = setInterval(gameTick, speed);
                     draw();
+                    startBtn.textContent = '🔄 重新开始';
                 }
 
                 function stopGame() {
                     running = false;
                     clearInterval(gameLoop);
                     removeOverlay();
+                    startBtn.textContent = '▶️ 开始游戏';
                 }
+
+                startBtn.addEventListener('click', () => { if (running) { stopGame();
+                        board = createBoard();
+                        draw(); } else resetGame(); });
 
                 document.addEventListener('keydown', function tetrisKey(e) {
                     if (currentGame !== 'tetris' || !running) return;
@@ -1131,45 +1017,38 @@
                         hardDrop(); }
                 });
 
-                document.getElementById('tetrisRestart').addEventListener('click', resetGame);
-                resetGame();
-
-                return { stop: stopGame, start: () => { if (!running) resetGame(); } };
+                board = createBoard();
+                draw();
+                return { stop: stopGame, start: () => {} };
             }
 
-            // ==================== WHACK-A-MOLE ====================
+            // ==================== 打地鼠 ====================
             function initMole() {
                 const holes = document.querySelectorAll('#moleGrid .mole-hole');
                 const scoreEl = document.getElementById('moleScore');
                 const timerEl = document.getElementById('moleTimer');
                 const bestEl = document.getElementById('moleBest');
-                const startBtn = document.getElementById('moleStart');
-                let score, timeLeft, gameRunning, moleTimer, countdownTimer;
-                let activeHole = null;
+                const startBtn = document.getElementById('moleStartBtn');
+                let score, timeLeft, gameRunning, moleTimer, countdownTimer, activeHole;
                 let bestScore = getBest('moleBest');
                 bestEl.textContent = bestScore;
 
-                function resetMoles() {
-                    holes.forEach(h => {
-                        h.classList.remove('mole-up', 'mole-hit');
-                        h.textContent = '🕳️';
-                    });
-                    activeHole = null;
-                }
+                function resetMoles() { holes.forEach(h => { h.classList.remove('mole-up', 'mole-hit');
+                        h.textContent = '🕳️'; });
+                    activeHole = null; }
 
                 function showRandomMole() {
                     if (!gameRunning) return;
                     resetMoles();
                     const idx = Math.floor(Math.random() * 9);
-                    const hole = holes[idx];
-                    hole.classList.add('mole-up');
-                    hole.textContent = '🐹';
+                    holes[idx].classList.add('mole-up');
+                    holes[idx].textContent = '🐹';
                     activeHole = idx;
                     const duration = Math.max(400, 1000 - score * 8);
                     moleTimer = setTimeout(() => {
                         if (activeHole === idx && gameRunning) {
-                            hole.classList.remove('mole-up');
-                            hole.textContent = '🕳️';
+                            holes[idx].classList.remove('mole-up');
+                            holes[idx].textContent = '🕳️';
                             activeHole = null;
                         }
                         if (gameRunning) showRandomMole();
@@ -1186,24 +1065,15 @@
                     scoreEl.textContent = score;
                     clearTimeout(moleTimer);
                     activeHole = null;
-                    setTimeout(() => {
-                        hole.classList.remove('mole-hit');
-                        hole.textContent = '🕳️';
-                    }, 200);
+                    setTimeout(() => { hole.classList.remove('mole-hit');
+                        hole.textContent = '🕳️'; }, 200);
                     if (gameRunning) setTimeout(showRandomMole, 200);
                 }
 
                 holes.forEach(hole => {
-                    hole.addEventListener('click', () => {
-                        const idx = parseInt(hole.dataset.index);
-                        hitMole(idx);
-                    });
-                    // Touch support
-                    hole.addEventListener('touchstart', (e) => {
-                        e.preventDefault();
-                        const idx = parseInt(hole.dataset.index);
-                        hitMole(idx);
-                    });
+                    hole.addEventListener('click', () => hitMole(parseInt(hole.dataset.index)));
+                    hole.addEventListener('touchstart', e => { e.preventDefault();
+                        hitMole(parseInt(hole.dataset.index)); });
                 });
 
                 function startGame() {
@@ -1216,13 +1086,13 @@
                     resetMoles();
                     showRandomMole();
                     countdownTimer = setInterval(() => {
-                        timeLeft--;
+                        if (!modState.moleInfiniteTime) timeLeft--;
                         timerEl.textContent = timeLeft;
                         if (timeLeft <= 0) {
                             stopGame();
                             const isNew = setBest('moleBest', score);
                             bestEl.textContent = getBest('moleBest');
-                            alert(`⏰ 时间到！\n命中: ${score} 只地鼠${isNew ? '\n🏆 新纪录！' : ''}`);
+                            alert(`⏰ 时间到！命中: ${score} ${isNew ? '🏆新纪录！' : ''}`);
                         }
                     }, 1000);
                     startBtn.textContent = '🔄 重新开始';
@@ -1233,42 +1103,36 @@
                     clearTimeout(moleTimer);
                     clearInterval(countdownTimer);
                     resetMoles();
-                    startBtn.textContent = '🔨 开始游戏';
+                    startBtn.textContent = '▶️ 开始游戏';
                 }
 
-                startBtn.addEventListener('click', startGame);
-
+                startBtn.addEventListener('click', () => { if (gameRunning) stopGame();
+                    else startGame(); });
                 return { stop: stopGame, start: () => {} };
             }
 
-            // ==================== MEMORY MATCH ====================
+            // ==================== 记忆翻牌（支持全显示模式） ====================
             function initMemory() {
                 const grid = document.getElementById('memoryGrid');
                 const pairsEl = document.getElementById('memoryPairs');
                 const movesEl = document.getElementById('memoryMoves');
                 const bestEl = document.getElementById('memoryBest');
-                const restartBtn = document.getElementById('memoryRestart');
+                const startBtn = document.getElementById('memoryStartBtn');
                 const EMOJIS = ['🍎', '🍋', '🍇', '🍒', '🌟', '🎸', '🚀', '🐱'];
-                let cards, flippedIndices, matchedCount, moves, locked;
+                let cards, selectedIndices, matchedSet, moves, gameStarted, locked;
                 let bestMoves = getBest('memoryBest');
                 bestEl.textContent = bestMoves > 0 ? bestMoves : '-';
+                let revealMode = modState.memoryReveal;
 
-                function shuffle(arr) {
-                    const a = [...arr];
-                    for (let i = a.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [a[i], a[j]] = [a[j], a[i]];
-                    }
-                    return a;
-                }
+                function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
 
                 function createCards() {
-                    const pairs = [...EMOJIS, ...EMOJIS];
-                    cards = shuffle(pairs);
-                    flippedIndices = [];
-                    matchedCount = 0;
+                    cards = shuffle([...EMOJIS, ...EMOJIS]);
+                    selectedIndices = [];
+                    matchedSet = new Set();
                     moves = 0;
                     locked = false;
+                    gameStarted = false;
                     pairsEl.textContent = '0';
                     movesEl.textContent = '0';
                     renderGrid();
@@ -1284,68 +1148,46 @@
                         inner.className = 'card-inner';
                         inner.textContent = emoji;
                         card.appendChild(inner);
-                        if (flippedIndices.includes(i) || matchedIndices().includes(i)) {
-                            card.classList.add('flipped');
-                        }
-                        if (matchedIndices().includes(i)) {
-                            card.classList.add('matched');
-                        }
-                        card.addEventListener('click', () => flipCard(i));
+
+                        const isMatched = matchedSet.has(i);
+                        const isSelected = selectedIndices.includes(i);
+
+                        if (revealMode || isMatched || isSelected) card.classList.add('flipped');
+                        if (isMatched) card.classList.add('matched');
+                        if (isSelected && !isMatched) card.classList.add('selected');
+
+                        card.addEventListener('click', () => handleCardClick(i));
                         grid.appendChild(card);
                     });
                 }
 
-                function matchedIndices() {
-                    const matched = [];
-                    const seen = {};
-                    flippedIndices.forEach(i => {
-                        const emoji = cards[i];
-                        if (seen[emoji] !== undefined && !matched.includes(seen[emoji]) && !matched.includes(
-                                i)) {
-                            matched.push(seen[emoji], i);
-                        }
-                        seen[emoji] = i;
-                    });
-                    // Only return truly matched (both flipped and same)
-                    const result = [];
-                    const count = {};
-                    flippedIndices.forEach(i => { count[cards[i]] = (count[cards[i]] || 0) + 1; });
-                    flippedIndices.forEach(i => {
-                        if (count[cards[i]] >= 2) result.push(i);
-                    });
-                    return [...new Set(result)];
-                }
-
-                function flipCard(index) {
-                    if (locked) return;
-                    if (flippedIndices.includes(index)) return;
-                    if (matchedIndices().includes(index)) return;
-                    if (flippedIndices.length >= 2) return;
-                    flippedIndices.push(index);
+                function handleCardClick(index) {
+                    if (!gameStarted || locked || matchedSet.has(index) || selectedIndices.length >= 2) return;
+                    if (selectedIndices.includes(index)) return;
+                    selectedIndices.push(index);
                     moves++;
                     movesEl.textContent = Math.ceil(moves / 2);
                     renderGrid();
-                    if (flippedIndices.length === 2) {
+
+                    if (selectedIndices.length === 2) {
                         locked = true;
-                        const [i1, i2] = flippedIndices;
+                        const [i1, i2] = selectedIndices;
                         if (cards[i1] === cards[i2]) {
-                            matchedCount++;
-                            pairsEl.textContent = matchedCount;
-                            flippedIndices = [];
+                            matchedSet.add(i1);
+                            matchedSet.add(i2);
+                            pairsEl.textContent = matchedSet.size / 2;
+                            selectedIndices = [];
                             locked = false;
                             renderGrid();
-                            if (matchedCount === 8) {
+                            if (matchedSet.size === 16) {
                                 const totalMoves = Math.ceil(moves / 2);
                                 const isNew = setBest('memoryBest', totalMoves);
                                 bestEl.textContent = getBest('memoryBest');
-                                setTimeout(() => {
-                                    alert(
-                                `🎉 恭喜！你完成了！\n步数: ${totalMoves}${isNew ? '\n🏆 新纪录！' : ''}`);
-                                }, 300);
+                                setTimeout(() => alert(`🎉 完成！步数: ${totalMoves} ${isNew ? '🏆新纪录！' : ''}`), 300);
                             }
                         } else {
                             setTimeout(() => {
-                                flippedIndices = [];
+                                selectedIndices = [];
                                 locked = false;
                                 renderGrid();
                             }, 700);
@@ -1353,27 +1195,51 @@
                     }
                 }
 
-                restartBtn.addEventListener('click', createCards);
+                function startGame() {
+                    createCards();
+                    gameStarted = true;
+                    startBtn.textContent = '🔄 重新开始';
+                }
+
+                function enableRevealMode() {
+                    revealMode = true;
+                    if (gameStarted) renderGrid();
+                }
+
+                function disableRevealMode() {
+                    revealMode = false;
+                    if (gameStarted) renderGrid();
+                }
+
+                startBtn.addEventListener('click', startGame);
                 createCards();
 
-                return { stop: () => {}, start: () => {} };
+                return {
+                    stop: () => {},
+                    start: () => {},
+                    enableRevealMode,
+                    disableRevealMode
+                };
             }
 
-            // ==================== 2048 GAME ====================
+            // ==================== 2048（带动画） ====================
             function init2048() {
                 const gridEl = document.getElementById('grid2048');
                 const scoreEl = document.getElementById('score2048');
                 const bestEl = document.getElementById('best2048');
-                const restartBtn = document.getElementById('restart2048');
-                let grid, score, gameOverFlag;
+                const startBtn = document.getElementById('start2048Btn');
+                let grid, score, gameStarted = false,
+                    gameOverFlag = false;
                 let bestScore = getBest('best2048');
                 bestEl.textContent = bestScore;
+                let animCells = [];
 
                 function initGrid() {
                     grid = Array.from({ length: 4 }, () => Array(4).fill(0));
                     score = 0;
                     gameOverFlag = false;
                     scoreEl.textContent = '0';
+                    animCells = [];
                     addRandom();
                     addRandom();
                     renderGrid();
@@ -1384,9 +1250,10 @@
                     for (let r = 0; r < 4; r++)
                         for (let c = 0; c < 4; c++)
                             if (grid[r][c] === 0) empty.push({ r, c });
-                    if (empty.length === 0) return;
+                    if (empty.length === 0) return null;
                     const { r, c } = empty[Math.floor(Math.random() * empty.length)];
                     grid[r][c] = Math.random() < 0.9 ? 2 : 4;
+                    return { r, c };
                 }
 
                 function renderGrid() {
@@ -1398,54 +1265,72 @@
                             const val = grid[r][c];
                             cell.textContent = val > 0 ? val : '';
                             if (val > 0) cell.setAttribute('data-val', val);
+                            if (animCells.some(p => p.r === r && p.c === c)) cell.classList.add('pop');
                             gridEl.appendChild(cell);
                         }
                     }
+                    animCells = [];
                 }
 
                 function slide(row) {
                     let arr = row.filter(v => v !== 0);
+                    const merged = [];
                     for (let i = 0; i < arr.length - 1; i++) {
                         if (arr[i] === arr[i + 1]) {
                             arr[i] *= 2;
                             score += arr[i];
+                            merged.push(i);
                             arr[i + 1] = 0;
                         }
                     }
                     arr = arr.filter(v => v !== 0);
                     while (arr.length < 4) arr.push(0);
-                    return arr;
+                    return { result: arr, merged };
                 }
 
                 function move(direction) {
-                    if (gameOverFlag) return;
+                    if (!gameStarted || gameOverFlag) return;
                     const oldGrid = grid.map(r => [...r]);
+                    const mergePositions = [];
                     if (direction === 'left') {
-                        for (let r = 0; r < 4; r++) grid[r] = slide(grid[r]);
+                        for (let r = 0; r < 4; r++) {
+                            const { result, merged } = slide(grid[r]);
+                            grid[r] = result;
+                            merged.forEach(c => mergePositions.push({ r, c }));
+                        }
                     } else if (direction === 'right') {
-                        for (let r = 0; r < 4; r++) grid[r] = slide(grid[r].reverse()).reverse();
+                        for (let r = 0; r < 4; r++) {
+                            const { result, merged } = slide(grid[r].reverse());
+                            grid[r] = result.reverse();
+                            merged.forEach(c => mergePositions.push({ r, c: 3 - c }));
+                        }
                     } else if (direction === 'up') {
                         for (let c = 0; c < 4; c++) {
-                            const col = slide([grid[0][c], grid[1][c], grid[2][c], grid[3][c]]);
-                            for (let r = 0; r < 4; r++) grid[r][c] = col[r];
+                            const col = [grid[0][c], grid[1][c], grid[2][c], grid[3][c]];
+                            const { result, merged } = slide(col);
+                            for (let r = 0; r < 4; r++) grid[r][c] = result[r];
+                            merged.forEach(r => mergePositions.push({ r, c }));
                         }
                     } else if (direction === 'down') {
                         for (let c = 0; c < 4; c++) {
-                            const col = slide([grid[3][c], grid[2][c], grid[1][c], grid[0][c]]);
-                            for (let r = 0; r < 4; r++) grid[3 - r][c] = col[r];
+                            const col = [grid[3][c], grid[2][c], grid[1][c], grid[0][c]];
+                            const { result, merged } = slide(col);
+                            for (let r = 0; r < 4; r++) grid[3 - r][c] = result[r];
+                            merged.forEach(r => mergePositions.push({ r: 3 - r, c }));
                         }
                     }
                     const changed = JSON.stringify(oldGrid) !== JSON.stringify(grid);
                     if (changed) {
-                        addRandom();
+                        // 记录合并位置和新方块位置
+                        animCells = [...mergePositions];
+                        const newTile = addRandom();
+                        if (newTile) animCells.push(newTile);
                         scoreEl.textContent = score;
                         if (setBest('best2048', score)) bestEl.textContent = score;
                         renderGrid();
                         if (isGameOver()) {
                             gameOverFlag = true;
-                            setTimeout(() => {
-                                alert(`😞 游戏结束！\n得分: ${score}${setBest('best2048', score) ? '\n🏆 新纪录！' : ''}`);
-                            }, 200);
+                            setTimeout(() => alert(`游戏结束！得分: ${score}`), 200);
                         }
                     }
                 }
@@ -1460,8 +1345,28 @@
                     return true;
                 }
 
+                function spawn2048Tile() {
+                    if (!gameStarted) { initGrid();
+                        gameStarted = true;
+                        gameOverFlag = false;
+                        startBtn.textContent = '🔄 重新开始'; }
+                    const empty = [];
+                    for (let r = 0; r < 4; r++)
+                        for (let c = 0; c < 4; c++)
+                            if (grid[r][c] === 0) empty.push({ r, c });
+                    if (empty.length > 0) {
+                        const { r, c } = empty[Math.floor(Math.random() * empty.length)];
+                        grid[r][c] = 2048;
+                        score += 2048;
+                        scoreEl.textContent = score;
+                        if (setBest('best2048', score)) bestEl.textContent = score;
+                        animCells = [{ r, c }];
+                        renderGrid();
+                    }
+                }
+
                 document.addEventListener('keydown', function key2048(e) {
-                    if (currentGame !== 'game2048') return;
+                    if (currentGame !== 'game2048' || !gameStarted) return;
                     const key = e.key.toLowerCase();
                     if (key === 'arrowleft' || key === 'a') { e.preventDefault();
                         move('left'); } else if (key === 'arrowright' || key === 'd') { e.preventDefault();
@@ -1470,56 +1375,29 @@
                         move('down'); }
                 });
 
-                // Touch swipe support for 2048
-                let touchStartX, touchStartY;
-                gridEl.addEventListener('touchstart', (e) => {
-                    if (currentGame !== 'game2048') return;
-                    touchStartX = e.touches[0].clientX;
-                    touchStartY = e.touches[0].clientY;
-                });
-                gridEl.addEventListener('touchend', (e) => {
-                    if (currentGame !== 'game2048') return;
-                    if (!touchStartX) return;
-                    const dx = e.changedTouches[0].clientX - touchStartX;
-                    const dy = e.changedTouches[0].clientY - touchStartY;
-                    const absDx = Math.abs(dx);
-                    const absDy = Math.abs(dy);
-                    if (Math.max(absDx, absDy) < 30) return;
-                    if (absDx > absDy) {
-                        move(dx > 0 ? 'right' : 'left');
-                    } else {
-                        move(dy > 0 ? 'down' : 'up');
-                    }
-                    touchStartX = null;
-                    touchStartY = null;
+                startBtn.addEventListener('click', () => {
+                    if (!gameStarted) { initGrid();
+                        gameStarted = true;
+                        gameOverFlag = false;
+                        startBtn.textContent = '🔄 重新开始'; } else { initGrid();
+                        gameStarted = true;
+                        gameOverFlag = false; }
                 });
 
-                restartBtn.addEventListener('click', initGrid);
                 initGrid();
-
-                return { stop: () => {}, start: () => {} };
+                return { stop: () => {}, start: () => {}, spawn2048Tile };
             }
 
-            // ==================== INITIALIZE ALL GAMES ====================
+            // ==================== 注册游戏实例 ====================
             gameInstances.snake = initSnake();
             gameInstances.tetris = initTetris();
             gameInstances.mole = initMole();
             gameInstances.memory = initMemory();
             gameInstances.game2048 = init2048();
 
-            // Start with snake active, stop others
-            Object.keys(gameInstances).forEach(key => {
-                if (key !== 'snake' && gameInstances[key].stop) {
-                    gameInstances[key].stop();
-                }
-            });
-
-            console.log('🎮 游戏合集已就绪！');
-            console.log('  🐍 贪吃蛇 - 方向键控制');
-            console.log('  🧱 俄罗斯方块 - 方向键+空格');
-            console.log('  🔨 打地鼠 - 点击地鼠');
-            console.log('  🧠 记忆翻牌 - 点击翻牌');
-            console.log('  🔢 2048 - 方向键/WASD');
+            console.log('🎮 游戏合集已就绪 | 点击游戏内开始按钮游玩');
+            console.log('⚙️ 点击右下角齿轮 → 密码 123456 → 访问特殊选项');
+            console.log('🐍 贪吃蛇速度滑块可公开调节');
         })();
     </script>
 </body>
